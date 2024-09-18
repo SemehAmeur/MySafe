@@ -6,7 +6,12 @@ class Safecon:
         self.cursor = self.connection.cursor()
 
     def create_table_users(self):
-        pass
+        self.cursor.execute("""CREATE  TABLE IF NOT EXISTS users(
+                            user_id  INTEGER PRIMARY KEY AUTOINCREMENT,
+                            user_name  TEXT NOT NULL,
+                            user_password TEXT NOT NULL)""")
+        self.connection.commit()
+        
     def create_table_passwords(self):
         pass
     def create_table_activities(self):
