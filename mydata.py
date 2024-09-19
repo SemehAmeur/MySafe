@@ -1,5 +1,6 @@
 import sqlite3
 
+
 class Safecon:
     def __init__(self):
         self.connection = sqlite3.connect("safeconfig.db")
@@ -47,3 +48,5 @@ class Safecon:
                             user_name TEXT,
                             user_id INTEGER)""")
         self.connection.commit()
+
+        
