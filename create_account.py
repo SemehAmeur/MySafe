@@ -52,3 +52,16 @@ class CreateAccount(QWidget, Ui_CreateAccount):
                                          'Please make sure to fill in all the fields',
                                          QMessageBox.Ok)
 
+    def exist(self, username):
+        statement = '''SELECT user_name FROM users'''
+        connection = sqlite3.connect('safeconfig.db')
+        cursor = connection.cursor()
+        cursor.execute(statement)
+        output = cursor.fetchall()
+        connection.commit()
+        # Close the connection
+        connection.close()
+        for row in output:
+            if username in row:
+                return True
+        return False
