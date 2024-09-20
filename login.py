@@ -16,8 +16,10 @@ class Login(QWidget, Ui_Login):
         self.createAccountPushButton.clicked.connect(self.create_account)
         self.loginPushButton.clicked.connect(self.connect_btn)
     
-    def create_account(self): 
-        pass
+    def create_account(self):
+        self.createaccount = CreateAccount(self.app)
+        self.createaccount.show()
+        
     def myshow(self): 
         pass
     def connect_btn(self): 
