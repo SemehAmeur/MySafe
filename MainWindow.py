@@ -43,3 +43,24 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                              '\tpassword)other data you must copy it manually.\n'
                              'I am sure that other buttons works the same the way you are thinking about.',
                              QMessageBox.Ok)
+    def about_this_software(self):
+        QMessageBox.information(self, 'About this MySafe',
+                                'I have been always afraid about my identity'
+                                '\non the internet, So I generally create accounts\n'
+                                'with different passwords or wrong information\n'
+                                'and as always I forget the related information\n'
+                                'so I lose access.\n'
+                                'And that is why I decided to create MySafe where\n'
+                                'I can store all my passwords while I am feeling Safe\n'
+                                'Maybe you are confused why you are reading such thing.\n'
+                                'Well I have created MySaffe to use it and share it\n'
+                                'with others having the same problem\n'
+                                'You may also find it strange to store data with different\n'
+                                'information each time.\n'
+                                'Well, each time I create an account with different information\n'
+                                'because back in 2020 I received a message from a friend\n'
+                                'about a fake account using my name and my photo.\n'
+                                'You have all the reasons to use MySafe\n'
+                                'and why not improve it since it is an open source or\n'
+                                'you can contact me to improve it',
+                                QMessageBox.Ok)
