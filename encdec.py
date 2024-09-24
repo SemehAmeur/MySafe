@@ -1,7 +1,7 @@
 from Crypto.Random import get_random_bytes
 from Crypto.Protocol.KDF import PBKDF2
 from Crypto.Cipher import AES
-from Crypto.Util.Padding import pad
+from Crypto.Util.Padding import pad, unpad
 
 
 class EncryptDecrypt:
@@ -16,3 +16,24 @@ class EncryptDecrypt:
         data_array = [str(cipher.iv), str(ciphered_data)]
         data_array_string = str(data_array)
         return data_array_string
+
+    def decrypt(self, data_array_string):
+        data_array = eval(data_array_string)
+        iv_string = data_array[0]
+        iv = eval(iv_string)
+        data_to_decrypt_string = data_array[1]
+        data_to_decrypt = eval(data_to_decrypt_string)
+        cipher = AES.new(self.key, AES.MODE_CBC, iv=iv)
+        decrypted_data = unpad(cipher.decrypt(data_to_decrypt), AES.block_size)
+        data_to_preview = decrypted_data.decode('UTF_8')
+        return data_to_preview
+
+    '''
+    print(ciphered_data)
+    print(cipher.iv)
+    print(str(data_to_crypt) + str(cipher.iv))
+    print()
+    array_data = [cipher.IV, ciphered_data]
+    print(str(array_data))
+    
+    '''
