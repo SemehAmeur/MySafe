@@ -64,3 +64,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                                 'and why not improve it since it is an open source or\n'
                                 'you can contact me to improve it',
                                 QMessageBox.Ok)
+    def check_data_btn(self):
+        try:
+            data_to_check_id = self.allDataTableWidget.item(self.allDataTableWidget.currentRow(), 0).text()
+            self.check_data = CheckData(self.app, self, data_to_check_id, self.decryptPass)
+
+        except:
+            QMessageBox.critical(self, 'Unvailable Data',
+                                 'Please select a data to preview the information',
+                                 QMessageBox.Ok)

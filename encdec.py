@@ -28,12 +28,3 @@ class EncryptDecrypt:
         data_to_preview = decrypted_data.decode('UTF_8')
         return data_to_preview
 
-    '''
-    print(ciphered_data)
-    print(cipher.iv)
-    print(str(data_to_crypt) + str(cipher.iv))
-    print()
-    array_data = [cipher.IV, ciphered_data]
-    print(str(array_data))
-    
-    '''
