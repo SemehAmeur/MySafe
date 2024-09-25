@@ -73,3 +73,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             QMessageBox.critical(self, 'Unvailable Data',
                                  'Please select a data to preview the information',
                                  QMessageBox.Ok)
+    def closemyapp(self):
+        self.close()
+
+    def logout(self):
+        self.hide()
+        self.oldConsole.myshow()
