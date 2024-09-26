@@ -79,3 +79,24 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def logout(self):
         self.hide()
         self.oldConsole.myshow()
+        def update_btn(self):
+        ret = QMessageBox.critical(self, 'Updating',
+                                   'Are you sure about updating this item?',
+                                   QMessageBox.Yes | QMessageBox.No)
+        if ret == QMessageBox.Yes:
+            tableWidgetDict = {1: 'password_website', 2: 'password_link', 3: 'password_linked_website',
+                               4: 'password_mail',
+                               5: 'password_second_mail', 6: 'password_username', 7: 'password_first_name',
+                               8: 'password_last_name', 9: 'password_birthdate', 10: 'password_phone',
+                               12: 'password_security_question', 13: 'password_answer', 14: 'password_main_device',
+                               15: 'password_purpose_of_use'}
+
+            toUpdate = tableWidgetDict[self.allDataTableWidget.currentColumn()]
+            newValue = self.allDataTableWidget.currentItem().text()
+            cr = EncryptDecrypt(self.decryptPass)
+            newValue = cr.encrypt(newValue)
+            valueId = self.allDataTableWidget.item(self.allDataTableWidget.currentRow(), 0).text()
+            statement = ('UPDATE passwords SET ' + toUpdate + ' = ?  WHERE password_id = ' + valueId)
+            param = (newValue,)
+            self.cursor.execute(statement, param)
+            self.connection.commit()
