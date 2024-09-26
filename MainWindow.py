@@ -100,3 +100,5 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             param = (newValue,)
             self.cursor.execute(statement, param)
             self.connection.commit()
+    def change_password(self):
+        self.chngpass = ChangePassword(self.app, self.user)
