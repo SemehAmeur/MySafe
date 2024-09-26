@@ -102,3 +102,46 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.connection.commit()
     def change_password(self):
         self.chngpass = ChangePassword(self.app, self.user)
+        def add_to_db(self):
+
+        # Check for the inputs and get result
+        bol, param = self.check_inputs()
+        if bol:
+            # add the written data to the table
+            row_position = self.allDataTableWidget.rowCount()
+            self.allDataTableWidget.insertRow(row_position)
+            for i in range(16):
+                self.allDataTableWidget.setItem(row_position, i + 1, QTableWidgetItem(param[i]))
+
+            # crypt data
+            cr = EncryptDecrypt(self.decryptPass)
+            # Loop through the list of data to store inside the DB
+            for i in range(len(param)):
+                param[i] = cr.encrypt(param[i])
+            # The username should not be cyphered because I need to use it in fetching data from database
+            param.append(self.user)
+
+            params = tuple(param)
+            # Inserting Data inside the DataBase
+            statement = "INSERT INTO passwords VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+            self.cursor.execute(statement, params)
+            self.connection.commit()
+            param = [self.websiteNameLineEdit, self.websiteLinkLineEdit, self.linkedWebsiteLineEdit, self.emailLineEdit,
+                     self.secondEmailLineEdit, self.usernameLineEdit, self.firstNameLineEdit, self.lastNameLineEdit,
+                     self.phoneNumerLineEdit, self.passwordLineEdit, self.securityQuestionLineEdit, self.answerLineEdit,
+                     self.mainDeviceLineEdit, self.purposeOfUseLineEdit]
+
+            # assign the id to the row
+            statement = 'SELECT password_id FROM passwords WHERE user_id = "' + self.user + '"'
+            self.cursor.execute(statement)
+            output = self.cursor.fetchall()
+            self.connection.commit()
+
+            the_id = (str(output[-1][0]))
+            self.allDataTableWidget.setItem(row_position, 0, QTableWidgetItem(the_id))
+
+            # empty the edit_lines
+            # self.birthDateEdit
+            for el in param:
+                el.setText("")
+            self.notePlainTextEdit.setPlainText("")
