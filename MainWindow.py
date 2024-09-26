@@ -145,3 +145,20 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             for el in param:
                 el.setText("")
             self.notePlainTextEdit.setPlainText("")
+    def check_inputs(self):
+        param = [self.websiteNameLineEdit.text(), self.websiteLinkLineEdit.text(), self.linkedWebsiteLineEdit.text(),
+                 self.emailLineEdit.text(), self.secondEmailLineEdit.text(), self.usernameLineEdit.text(),
+                 self.firstNameLineEdit.text(), self.lastNameLineEdit.text(), self.birthDateEdit.text(),
+                 self.phoneNumerLineEdit.text(), self.passwordLineEdit.text(), self.securityQuestionLineEdit.text(),
+                 self.answerLineEdit.text(), self.mainDeviceLineEdit.text(), self.purposeOfUseLineEdit.text(),
+                 self.notePlainTextEdit.toPlainText()]
+
+        if (self.websiteNameLineEdit.text() != "" and (
+                self.emailLineEdit.text() != "" or self.usernameLineEdit.text() != "") and
+                self.passwordLineEdit.text() != ""):
+            return True, param
+        else:
+            QMessageBox.critical(self, 'Hint',
+                                 'Please make sure to insert a website name, \na username or an email, and a password.',
+                                 QMessageBox.Ok)
+            return False, None
