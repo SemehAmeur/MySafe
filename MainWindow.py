@@ -1,7 +1,18 @@
-from UI.ui_mainwindow import Ui_MainWindow
-import sqlite3
-import history
+import random
+
 from PySide6.QtWidgets import QMainWindow, QTableWidgetItem, QMessageBox
+
+import history
+from UI.ui_mainwindow import Ui_MainWindow
+
+from Check_Data import CheckData
+from change_password import ChangePassword
+
+from encdec import EncryptDecrypt
+import PassWordGenerator
+
+import sqlite3
+import pyperclip
 
 
 class MainWindow(QMainWindow, Ui_MainWindow):
@@ -10,6 +21,18 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.setupUi(self)
         self.app = app
         self.show()
+
+        self.chngpass = None
+        self.login = None
+        self.check_data = None
+        self.history = None
+
+        self.decryptPass = decryptPass
+        self.oldConsole = consoleOldWindow
+        self.connection = sqlite3.connect("safeconfig.db")
+        self.cursor = self.connection.cursor()
+        self.user = user
+
         self.allDataTableWidget.setColumnHidden(0, True)
         self.allDataTableWidget.setColumnHidden(11, True)
         self.db_to_preview()
@@ -43,6 +66,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                              '\tpassword)other data you must copy it manually.\n'
                              'I am sure that other buttons works the same the way you are thinking about.',
                              QMessageBox.Ok)
+
     def about_this_software(self):
         QMessageBox.information(self, 'About this MySafe',
                                 'I have been always afraid about my identity'
@@ -64,6 +88,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                                 'and why not improve it since it is an open source or\n'
                                 'you can contact me to improve it',
                                 QMessageBox.Ok)
+
     def check_data_btn(self):
         try:
             data_to_check_id = self.allDataTableWidget.item(self.allDataTableWidget.currentRow(), 0).text()
@@ -73,13 +98,15 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             QMessageBox.critical(self, 'Unvailable Data',
                                  'Please select a data to preview the information',
                                  QMessageBox.Ok)
+
     def closemyapp(self):
         self.close()
 
     def logout(self):
         self.hide()
         self.oldConsole.myshow()
-        def update_btn(self):
+
+    def update_btn(self):
         ret = QMessageBox.critical(self, 'Updating',
                                    'Are you sure about updating this item?',
                                    QMessageBox.Yes | QMessageBox.No)
@@ -100,9 +127,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             param = (newValue,)
             self.cursor.execute(statement, param)
             self.connection.commit()
+
     def change_password(self):
         self.chngpass = ChangePassword(self.app, self.user)
-        def add_to_db(self):
+
+    def add_to_db(self):
 
         # Check for the inputs and get result
         bol, param = self.check_inputs()
@@ -145,6 +174,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             for el in param:
                 el.setText("")
             self.notePlainTextEdit.setPlainText("")
+
+    # check inputs
     def check_inputs(self):
         param = [self.websiteNameLineEdit.text(), self.websiteLinkLineEdit.text(), self.linkedWebsiteLineEdit.text(),
                  self.emailLineEdit.text(), self.secondEmailLineEdit.text(), self.usernameLineEdit.text(),
