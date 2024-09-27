@@ -211,4 +211,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     self.fill_the_table(cr, row_position, i, str(row[i]))
                 else:
                     self.fill_the_table(cr, row_position, i, row[i])
-        
+    def fill_the_table(self, cr, row_position, column, el_to_decrypt):
+        if column == 0:
+            self.allDataTableWidget.setItem(row_position, column, QTableWidgetItem(el_to_decrypt))
+        else:
+            self.allDataTableWidget.setItem(row_position, column, QTableWidgetItem(cr.decrypt(el_to_decrypt)))
