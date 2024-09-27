@@ -193,3 +193,22 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                                  'Please make sure to insert a website name, \na username or an email, and a password.',
                                  QMessageBox.Ok)
             return False, None
+   
+    def db_to_preview(self):
+        statement = 'SELECT * FROM passwords WHERE user_id = "' + self.user + '"'
+        self.cursor.execute(statement)
+        output = self.cursor.fetchall()
+        self.connection.commit()
+        # Close the connection
+
+        # self.connection.close()
+        cr = EncryptDecrypt(self.decryptPass)
+        for row in output:
+            row_position = self.allDataTableWidget.rowCount()
+            self.allDataTableWidget.insertRow(row_position)
+            for i in range(16):
+                if i == 0:
+                    self.fill_the_table(cr, row_position, i, str(row[i]))
+                else:
+                    self.fill_the_table(cr, row_position, i, row[i])
+        
