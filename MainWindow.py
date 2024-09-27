@@ -216,3 +216,5 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.allDataTableWidget.setItem(row_position, column, QTableWidgetItem(el_to_decrypt))
         else:
             self.allDataTableWidget.setItem(row_position, column, QTableWidgetItem(cr.decrypt(el_to_decrypt)))
+    def copy_pass_word(self):
+        pyperclip.copy(self.allDataTableWidget.item(self.allDataTableWidget.currentRow(), 11).text())
