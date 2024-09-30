@@ -241,3 +241,16 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def copy_pass_word(self):
         pyperclip.copy(self.allDataTableWidget.item(self.allDataTableWidget.currentRow(), 11).text())
+    def delete_password(self):
+        the_password_id = (self.allDataTableWidget.item(self.allDataTableWidget.currentRow(), 0).text())
+        ret = QMessageBox.critical(self, 'Deleting',
+                                   'Are you sure about deleting this password?',
+                                   QMessageBox.Yes | QMessageBox.No)
+        if ret == QMessageBox.Yes:
+            # delete element
+            statement = 'DELETE FROM passwords WHERE password_id = "' + the_password_id + '"'
+            self.cursor.execute(statement)
+            self.connection.commit()
+
+            # Delete the row from the table widget
+            self.allDataTableWidget.removeRow(self.allDataTableWidget.currentRow())
