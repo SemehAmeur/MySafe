@@ -254,3 +254,5 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
             # Delete the row from the table widget
             self.allDataTableWidget.removeRow(self.allDataTableWidget.currentRow())
+    def delete_a_row(self):
+        self.allDataTableWidget.removeRow(self.allDataTableWidget.currentRow())
