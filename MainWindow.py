@@ -216,5 +216,28 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.allDataTableWidget.setItem(row_position, column, QTableWidgetItem(el_to_decrypt))
         else:
             self.allDataTableWidget.setItem(row_position, column, QTableWidgetItem(cr.decrypt(el_to_decrypt)))
+    def generate_password_btn(self):
+        lowercasecheckbox = self.lowerCaseCheckBox.isChecked()
+        uppercasecheckbox = self.upperCaseCheckBox.isChecked()
+        numberscasecheckbox = self.numbersCheckBox.isChecked()
+        specialdigitscheckbox = self.specialDigitsCheckBox.isChecked()
+
+        length = int(self.lengthPasswordSpinBox.text())
+
+        if lowercasecheckbox or uppercasecheckbox or numberscasecheckbox or specialdigitscheckbox:
+            passwo = PassWordGenerator.PassWordGenerator()
+            passtring = passwo.passgenerate(length, lowercasecheckbox, uppercasecheckbox, numberscasecheckbox,
+                                            specialdigitscheckbox)
+
+            # Insert the generated password into the password line edit (UI)
+            self.passwordLineEdit.setText(passtring)
+
+            # Copy the generated password to the clipboard
+            pyperclip.copy(passtring)
+        namelist= ['eduar', 'kevin', 'alin', 'thomas', 'rumari', 'eboka', 'alejandro']
+        lnamelist = ['tellma', 'nani', 'forsess', 'eleen', 'xavi', 'portgas', 'newgate']
+        self.lastNameLineEdit.setText(random.choice(lnamelist))
+        self.firstNameLineEdit.setText(random.choice(namelist))
+
     def copy_pass_word(self):
         pyperclip.copy(self.allDataTableWidget.item(self.allDataTableWidget.currentRow(), 11).text())
