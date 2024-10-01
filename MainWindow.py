@@ -193,7 +193,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                                  'Please make sure to insert a website name, \na username or an email, and a password.',
                                  QMessageBox.Ok)
             return False, None
-   
+
     def db_to_preview(self):
         statement = 'SELECT * FROM passwords WHERE user_id = "' + self.user + '"'
         self.cursor.execute(statement)
@@ -211,11 +211,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     self.fill_the_table(cr, row_position, i, str(row[i]))
                 else:
                     self.fill_the_table(cr, row_position, i, row[i])
+
     def fill_the_table(self, cr, row_position, column, el_to_decrypt):
         if column == 0:
             self.allDataTableWidget.setItem(row_position, column, QTableWidgetItem(el_to_decrypt))
         else:
             self.allDataTableWidget.setItem(row_position, column, QTableWidgetItem(cr.decrypt(el_to_decrypt)))
+
     def generate_password_btn(self):
         lowercasecheckbox = self.lowerCaseCheckBox.isChecked()
         uppercasecheckbox = self.upperCaseCheckBox.isChecked()
@@ -241,6 +243,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def copy_pass_word(self):
         pyperclip.copy(self.allDataTableWidget.item(self.allDataTableWidget.currentRow(), 11).text())
+
     def delete_password(self):
         the_password_id = (self.allDataTableWidget.item(self.allDataTableWidget.currentRow(), 0).text())
         ret = QMessageBox.critical(self, 'Deleting',
@@ -254,8 +257,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
             # Delete the row from the table widget
             self.allDataTableWidget.removeRow(self.allDataTableWidget.currentRow())
+
+    # Delete row from the table ( this function is to update the table if the user deletes the data from the
+    # data_visualize window
     def delete_a_row(self):
         self.allDataTableWidget.removeRow(self.allDataTableWidget.currentRow())
+
     def update_row(self):
         curr_row = self.allDataTableWidget.currentRow()
         password_id = self.allDataTableWidget.item(curr_row, 0).text()
