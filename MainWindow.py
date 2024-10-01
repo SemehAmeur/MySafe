@@ -256,3 +256,16 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.allDataTableWidget.removeRow(self.allDataTableWidget.currentRow())
     def delete_a_row(self):
         self.allDataTableWidget.removeRow(self.allDataTableWidget.currentRow())
+    def update_row(self):
+        curr_row = self.allDataTableWidget.currentRow()
+        password_id = self.allDataTableWidget.item(curr_row, 0).text()
+        statement = 'SELECT * FROM passwords WHERE password_id = ' + password_id
+        self.cursor.execute(statement)
+        one_output = self.cursor.fetchone()
+        self.connection.commit()
+        cr = EncryptDecrypt(self.decryptPass)
+        for i in range(16):
+            if i == 0:
+                self.allDataTableWidget.setItem(curr_row, i, QTableWidgetItem(str(one_output[0])))
+            else:
+                self.allDataTableWidget.setItem(curr_row, i, QTableWidgetItem(cr.decrypt(one_output[i])))
