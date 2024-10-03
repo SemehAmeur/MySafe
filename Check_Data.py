@@ -1,3 +1,4 @@
+import pyperclip
 from PySide6.QtWidgets import QWidget, QMessageBox
 from UI.ui_check_data import Ui_CheckData
 
@@ -43,7 +44,8 @@ class CheckData(QWidget, Ui_CheckData):
         self.notePlainTextEdit.setPlainText(cr.decrypt(self.output[16]))
 
     def copy_pass_word_btn(self):
-        pass
+        pyperclip.copy(self.passwordLabel.text())
+
 
     def delete_password_btn(self):
         pass
