@@ -46,7 +46,6 @@ class CheckData(QWidget, Ui_CheckData):
     def copy_pass_word_btn(self):
         pyperclip.copy(self.passwordLabel.text())
 
-
     def delete_password_btn(self):
         ret = QMessageBox.critical(self, 'Delete Password',
                                    'Are you sure to delete this element',
@@ -60,7 +59,10 @@ class CheckData(QWidget, Ui_CheckData):
             connection.commit()
             self.hide()
             self.oldConsoleWindow.delete_a_row()
+
     def modify_btn(self):
         self.modify_data = UpdateData(self.app, self.output, self.decryptPass, self)
+
     def update_a_row(self):
-        pass
+        self.preview_data()
+        self.oldConsoleWindow.update_row()
