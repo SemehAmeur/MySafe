@@ -61,6 +61,6 @@ class CheckData(QWidget, Ui_CheckData):
             self.hide()
             self.oldConsoleWindow.delete_a_row()
     def modify_btn(self):
-        pass
+        self.modify_data = UpdateData(self.app, self.output, self.decryptPass, self)
     def update_a_row(self):
         pass
