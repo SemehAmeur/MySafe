@@ -48,8 +48,18 @@ class CheckData(QWidget, Ui_CheckData):
 
 
     def delete_password_btn(self):
-        pass
-
+        ret = QMessageBox.critical(self, 'Delete Password',
+                                   'Are you sure to delete this element',
+                                   QMessageBox.Yes | QMessageBox.No)
+        if ret == QMessageBox.Yes:
+            # Delete element
+            statement = 'DELETE FROM passwords WHERE password_id = "' + self.data_to_check_id + '"'
+            connection = sqlite3.connect('safeconfig.db')
+            cursor = connection.cursor()
+            cursor.execute(statement)
+            connection.commit()
+            self.hide()
+            self.oldConsoleWindow.delete_a_row()
     def modify_btn(self):
         pass
     def update_a_row(self):
