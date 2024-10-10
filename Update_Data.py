@@ -54,3 +54,48 @@ class UpdateData(QWidget, Ui_UpdateData):
                                  'Please make sure to insert a website name, \na username or an email, and a password.',
                                  QMessageBox.Ok)
             return False, None
+
+    def update_btn(self):
+        ret = QMessageBox.critical(self, 'Saving Changes',
+                             'Are you sure that you want to save the changes',
+                             QMessageBox.Yes | QMessageBox.No)
+        if ret == QMessageBox.Yes:
+            # Check for the inputs and get result
+            bol, param = self.check_inputs()
+            if bol:
+                # crypt data
+                cr = EncryptDecrypt(self.decryptPass)
+                # Loop through the list of data to store inside the DB
+                self.data_to_modify = list(self.data_to_modify)
+                for i in range(len(param)):
+                    self.data_to_modify[i + 1] = cr.encrypt(param[i])
+
+                params = tuple(self.data_to_modify[1:-1])
+
+                connection = sqlite3.Connection('safeconfig.db')
+                cursor = connection.cursor()
+                # Inserting Data inside the DataBase
+                # statement = "INSERT INTO passwords VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+                statement = (
+                    'UPDATE passwords SET password_website = ?, password_link = ?, password_linked_website = ?, '
+                    'password_mail = ?, password_second_mail = ?, password_username = ?, password_first_name = '
+                    '?, password_last_name = ?, password_birthdate = ?, password_phone = ?, password_password = ?,'
+                    'password_security_question = ?, password_answer = ?, password_main_device = ?, '
+                    'password_purpose_of_use = ?, password_note = ?  WHERE password_id = ?')
+
+                params = params + (self.data_to_modify[0],)
+
+                cursor.execute(statement, params)
+                connection.commit()
+                connection.close()
+
+                self.check_data_console.preview_data()
+                self.check_data_console.update_a_row()
+                self.hide()
+        elif ret == QMessageBox.No:
+            re = QMessageBox.critical(self, 'Proceed Modification',
+                                      'Do you want to continue the Modification?',
+                                      QMessageBox.Yes | QMessageBox.No)
+            if re == QMessageBox.No:
+                self.hide()
+
