@@ -1,8 +1,10 @@
 import sqlite3
 
+import pyperclip
 from PySide6.QtCore import QDate
 from PySide6.QtWidgets import QWidget, QMessageBox
 
+import PassWordGenerator
 from UI.ui_update_data import Ui_UpdateData
 from encdec import EncryptDecrypt
 
@@ -99,3 +101,27 @@ class UpdateData(QWidget, Ui_UpdateData):
             if re == QMessageBox.No:
                 self.hide()
 
+
+
+    def generate_password_btn(self):
+        lowercasecheckbox = self.lowerCaseCheckBox.isChecked()
+        uppercasecheckbox = self.upperCaseCheckBox.isChecked()
+        numberscasecheckbox = self.numbersCheckBox.isChecked()
+        specialdigitscheckbox = self.specialDigitsCheckBox.isChecked()
+
+        length = int(self.lengthPasswordSpinBox.text())
+
+        if lowercasecheckbox or uppercasecheckbox or numberscasecheckbox or specialdigitscheckbox:
+            ret = QMessageBox.critical(self, 'Attention',
+                                       'Are you sure that you want to replace the old password?',
+                                       QMessageBox.Yes | QMessageBox.No)
+            if ret == QMessageBox.Yes:
+                passwo = PassWordGenerator.PassWordGenerator()
+                passtring = passwo.passgenerate(length, lowercasecheckbox, uppercasecheckbox, numberscasecheckbox,
+                                                specialdigitscheckbox)
+
+                # Insert the generated password into the password line edit (UI)
+                self.passwordLineEdit.setText(passtring)
+
+                # Copy the generated password to the clipboard
+                pyperclip.copy(passtring)
