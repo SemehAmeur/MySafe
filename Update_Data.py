@@ -3,7 +3,6 @@ import sqlite3
 from PySide6.QtCore import QDate
 from PySide6.QtWidgets import QWidget, QMessageBox
 
-import PassWordGenerator
 from UI.ui_update_data import Ui_UpdateData
 from encdec import EncryptDecrypt
 
@@ -37,3 +36,21 @@ class UpdateData(QWidget, Ui_UpdateData):
         d = cr.decrypt(self.data_to_modify[9])
 
         self.birthDateEdit.setDate(QDate(int(d[-4:]), int(d[3:5]), int(d[:2])))
+
+    def check_inputs(self):
+        param = [self.websiteNameLineEdit.text(), self.websiteLinkLineEdit.text(), self.linkedWebsiteLineEdit.text(),
+                 self.emailLineEdit.text(), self.secondEmailLineEdit.text(), self.usernameLineEdit.text(),
+                 self.firstNameLineEdit.text(), self.lastNameLineEdit.text(), self.birthDateEdit.text(),
+                 self.phoneNumerLineEdit.text(), self.passwordLineEdit.text(), self.securityQuestionLineEdit.text(),
+                 self.answerLineEdit.text(), self.mainDeviceLineEdit.text(), self.purposeOfUseLineEdit.text(),
+                 self.notePlainTextEdit.toPlainText()]
+
+        if (self.websiteNameLineEdit.text() != "" and (
+                self.emailLineEdit.text() != "" or self.usernameLineEdit.text() != "") and
+                self.passwordLineEdit.text() != ""):
+            return True, param
+        else:
+            QMessageBox.critical(self, 'Hint',
+                                 'Please make sure to insert a website name, \na username or an email, and a password.',
+                                 QMessageBox.Ok)
+            return False, None
